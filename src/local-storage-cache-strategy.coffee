@@ -19,5 +19,4 @@ module.exports = class LocalStorageCacheStrategy extends CachingStrategy
   # -------------------------------------------
   cachedResponseForRequest: (request) ->
     hash = @getRequestHash request
-    return unless hash? and window.localStorage.getItem(name) != null
-    JSON.parse LocalStorageHelper.get(hash)
+    JSON.parse window.localStorage.getItem(name) if hash
