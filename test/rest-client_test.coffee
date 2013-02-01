@@ -7,8 +7,8 @@ describe 'RestClient', ->
 
   it 'Should generate rest methods for resources', ->
     # Build resource bindings
-    @client.resource 'users', (r) ->
-      r.resource 'profile'
+    @client.resource 'users', ->
+      @resource 'profile'
     @client.resource 'leaderboards'
     @client.resource 'shop'
 
@@ -61,10 +61,10 @@ describe 'RestClient', ->
         expect(response.user).to.not.be.undefined
 
   it 'should bind rest actions to resource', ->
-    @client.resource 'games', (gr) ->
-      gr.bind 'demo', via: 'get'
-      gr.bind 'start',  via: 'post'
-      gr.bind 'finish', via: 'post'
+    @client.resource 'games', ->
+      @bind 'demo', via: 'get'
+      @bind 'start',  via: 'post'
+      @bind 'finish', via: 'post'
 
     expect(@client.games.demo).to.not.be.undefined
     expect(@client.games.start).to.not.be.undefined
