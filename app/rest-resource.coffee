@@ -10,10 +10,10 @@ module.exports = class RestResource
     @client.post "#{@name}.json", {user}, callbacks
 
   update:  (object_id, user, callbacks) ->
-    @client.put  "#{@name}/#{object_id}.json", {user}, callbacks
+    @client.put "#{@name}/#{object_id}.json", {user}, callbacks
 
   show:  (object_id, full, callbacks) ->
-    @client.get  (if full then "#{@name}/#{object_id}/full.json" else "#{@name}/#{object_id}.json"), {}, callbacks
+    @client.get "#{@name}/#{object_id}.json", {}, callbacks
 
   delete: (object_id, callbacks) ->
     @client.delete "#{@name}/#{object_id}.json"

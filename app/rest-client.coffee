@@ -1,5 +1,5 @@
-HttpClient = require 'helpers/heyphay/http-client'
-RestResource = require 'helpers/heyphay/rest-resource'
+HttpClient = require 'http-client'
+RestResource = require 'rest-resource'
 
 module.exports = class RestClient extends HttpClient
 

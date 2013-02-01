@@ -1,6 +1,4 @@
-LocalStorageHelper = require 'lib/heyphay/vendor/local-storage-helper'
-CachingStrategy = require 'helpers/heyphay/caching-strategy'
-CachingPolicy= require 'helpers/heyphay/caching-policy'
+CachingPolicy = require 'caching-policy'
 
 module.exports = class HttpClient
 

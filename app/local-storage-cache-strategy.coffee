@@ -1,4 +1,4 @@
-CachingStrategy = require 'helpers/heyphay/caching-strategy'
+CachingStrategy = require 'caching-strategy'
 
 module.exports = class LocalStorageCacheStrategy extends CachingStrategy
 
