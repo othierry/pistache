@@ -10,11 +10,11 @@ describe 'CachingStrategy', ->
     hash2 = @strategy.getRequestHash 'http://test.com/lol?id=43'
 
     # Hash should have been generated
-    expect(hash).to.not.be.nil
+    expect(hash).to.not.be.null
     expect(hash).to.not.equal 'http://test.com/lol?id=42'
 
     # Hash2 should have been generated
-    expect(hash2).to.not.be.nil
+    expect(hash2).to.not.be.null
     expect(hash2).to.not.equal 'http://test.com/lol?id=43'
 
     # Hash1 and hash2 should be different

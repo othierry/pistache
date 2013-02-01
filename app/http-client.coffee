@@ -17,6 +17,7 @@ module.exports = class HttpClient
   # Cache the request response if caching rules match
   # ----------------------------------------
   cacheResponse:(response, request) ->
+    return if @cachingPolicy is CachingPolicy.CachingPolicyNone
     return if @cachingStrategy is null or request is null
     @cachingStrategy.cacheResponse response, request
 
@@ -32,10 +33,10 @@ module.exports = class HttpClient
     url = "#{@url}/#{path}"
 
     # If cache enabled
-    if @cachingPolicy is CachingPolicy.CachingPolicyCacheThenNetwork or @cachingPolicy is CachingPolicy.CachingPolicyCacheIfAvailable
+    unless @cachingPolicy is CachingPolicy.CachingPolicyNone
       cachedResponse = @cachingStrategy?.cachedResponseForRequest url
       # Fire the success callback with cached response now before we refresh
-      callbacks?.success cachedResponse
+      callbacks?.success cachedResponse if cachedResponse
       # Stop here if cache only (not network)
       return if cachedResponse and @cachingPolicy is CachingPolicy.CachingPolicyCacheIfAvailable
 
@@ -68,7 +69,7 @@ module.exports = class HttpClient
   @request: (url, params, httpMethod, callbacks, apiVersion = 1) =>
     $.ajax
       type   : httpMethod
-      url    : url
+      url     : url
       data   : params
       headers: callbacks.headers() if callbacks and callbacks.headers
       success: (response) ->

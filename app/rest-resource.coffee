@@ -29,7 +29,7 @@ module.exports = class RestResource
   # (e.g: /games/start.json, /users/42/who_is_arround_me)
   # ---------------------------------------------
   bind: (name, options = null) ->
-    HTTPMethod = options?.via || 'get'
+    HTTPMethod = options?.via or 'get'
     @[name] = (params, callbacks) =>
       @client[HTTPMethod] "#{name}.json", params, callbacks
     @[name]

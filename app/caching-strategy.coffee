@@ -1,6 +1,5 @@
 module.exports = class CachingStrategy
 
-
   # Returns a unique hash based on the
   # given request url
   # ----------------------------
