@@ -12,7 +12,7 @@ module.exports = class RestResource
   update:  (object_id, user, callbacks) ->
     @client.put "#{@name}/#{object_id}.json", {user}, callbacks
 
-  show:  (object_id, full, callbacks) ->
+  show:  (object_id, callbacks) ->
     @client.get "#{@name}/#{object_id}.json", {}, callbacks
 
   delete: (object_id, callbacks) ->

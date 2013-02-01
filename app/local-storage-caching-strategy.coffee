@@ -1,6 +1,6 @@
 CachingStrategy = require 'caching-strategy'
 
-module.exports = class LocalStorageCacheStrategy extends CachingStrategy
+module.exports = class LocalStorageCachingStrategy extends CachingStrategy
 
   # Flush the entire local storage cache
   # ----------------------------
