@@ -1,0 +1,23 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Mocha Tests</title>
+  <link rel="stylesheet" href="stylesheets/test.css" />
+
+  <script src="../lib/pistache-vendor.js"></script>
+  <script src="../lib/pistache.js"></script>
+  <script>
+    mocha.setup({ui: 'bdd', globals: ['script*']});
+    window.expect = chai.expect;
+  </script>
+  <script src="test.js"></script>
+  <script>
+    $(function() {
+      mocha.run();
+    });
+  </script>
+</head>
+<body>
+  <div id="mocha"></div>
+</body>
+</html>
