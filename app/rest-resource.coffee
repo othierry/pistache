@@ -24,7 +24,7 @@ module.exports = class RestResource
   resource: (name, options = null) ->
     RestResource.bindResource(@, @client, name, options)
 
-  # Bind REST a endpoint (used for actions web to this resource node
+  # Bind REST a endpoint.
   # Suited for action web services instead of plain resource
   # (e.g: /games/start.json, /users/42/who_is_arround_me)
   # ---------------------------------------------

@@ -1,6 +1,6 @@
 LocalStorageCacheStrategy = require 'local-storage-caching-strategy'
 
-describe 'LocalStorageCacheStrategy', ->
+describe 'LocalStorageCachingStrategy', ->
 
   beforeEach ->
     @strategy = new LocalStorageCacheStrategy()

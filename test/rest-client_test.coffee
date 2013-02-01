@@ -59,3 +59,26 @@ describe 'RestClient', ->
     @client.users.delete @userId,
       success: (response) =>
         expect(response.user).to.not.be.undefined
+
+  it 'should bind rest actions to resource', ->
+    @client.resource 'games', (gr) ->
+      gr.bind 'demo', via: 'get'
+      gr.bind 'start',  via: 'post'
+      gr.bind 'finish', via: 'post'
+
+    expect(@client.games.demo).to.not.be.undefined
+    expect(@client.games.start).to.not.be.undefined
+    expect(@client.games.finish).to.not.be.undefined
+
+    # Start a game
+    @client.games.start
+      uuid: 'PLAYER-UUID'
+    , success: (response) ->
+        expect(response.game.id).to.exist
+
+        # Finsish the game
+        @client.games.finish
+          uuid: 'PLAYER-UUID'
+          game_id: response.game.id
+        , success: (response) ->
+            expect(response).to.exist
