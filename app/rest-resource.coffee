@@ -7,16 +7,16 @@ module.exports = class RestResource
   constructor: (@name, @client) ->
 
   create: (user, callbacks) ->
-    @client.post "#{@name}.json", {user}, callbacks
+    @client.post "#{@name}", {user}, callbacks
 
   update:  (object_id, user, callbacks) ->
-    @client.put "#{@name}/#{object_id}.json", {user}, callbacks
+    @client.put "#{@name}/#{object_id}", {user}, callbacks
 
   show:  (object_id, callbacks) ->
-    @client.get "#{@name}/#{object_id}.json", {}, callbacks
+    @client.get "#{@name}/#{object_id}", {}, callbacks
 
   delete: (object_id, callbacks) ->
-    @client.delete "#{@name}/#{object_id}.json"
+    @client.delete "#{@name}/#{object_id}"
 
   # Bind remote sub-resource access routes
   # (create, update, delete, show)
@@ -30,9 +30,15 @@ module.exports = class RestResource
   # ---------------------------------------------
   bind: (name, options = null) ->
     HTTPMethod = options?.via or 'get'
-    @[name] = (params, callbacks) =>
-      @client[HTTPMethod] "#{name}.json", params, callbacks
-    @[name]
+    path = options?.to or name
+    if options.member?
+      @[name] = (id, params, callbacks) =>
+        @client[HTTPMethod] "#{path}/#{id}", params, callbacks
+      @[name]
+    else
+      @[name] = (params, callbacks) =>
+        @client[HTTPMethod] "#{path}", params, callbacks
+      @[name]
 
   # Bind new resource with accessor [name] to {object}
   # Additional conf. can be provided (subresources, bindings...)
@@ -41,5 +47,5 @@ module.exports = class RestResource
     resource = new RestResource(name, client)
     # Bind resource to object insteance with [name] for accessor
     object[name] = resource
-    configuration(resource) if configuration
+    configuration.apply(resource) if configuration
     resource
