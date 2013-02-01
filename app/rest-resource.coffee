@@ -33,7 +33,7 @@ module.exports = class RestResource
     path = options?.to or name
     if options.member?
       @[name] = (id, params, callbacks) =>
-        @client[HTTPMethod] "#{path}/#{id}", params, callbacks
+        @client[HTTPMethod] "#{id}/#{path}", params, callbacks
       @[name]
     else
       @[name] = (params, callbacks) =>
