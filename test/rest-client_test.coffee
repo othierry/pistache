@@ -60,6 +60,14 @@ describe 'RestClient', ->
       success: (response) =>
         expect(response.user).to.not.be.undefined
 
+  it 'Shoud understand and parse complex bindings', ->
+    @client.resource 'leaderboards', ->
+      @bind 'current', via: 'get'
+      @bind 'ios',
+        to: '/platforms/ios'
+        via: 'get'
+
+
   it 'should bind rest actions to resource', ->
     @client.resource 'games', ->
       @bind 'demo', via: 'get'
