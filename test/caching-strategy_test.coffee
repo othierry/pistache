@@ -24,4 +24,4 @@ describe 'CachingStrategy', ->
     url = 'http://test.com/lol?id=42&t=true'
     hash = @strategy.getRequestHash url
     hash2 = @strategy.getRequestHash url
-    expect(hash).to.not.equal hash2
+    expect(hash).to.equal hash2

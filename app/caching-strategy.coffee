@@ -4,7 +4,7 @@ module.exports = class CachingStrategy
   # given request url
   # ----------------------------
   getRequestHash: (request) ->
-    CryptoJS.MD5 request if request?
+    CryptoJS.MD5(request).toString() if request?
 
   clearCache: ->
     console.error 'CachingStrategy subclasses must provide an implemention for clearCache()'
