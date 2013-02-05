@@ -6,7 +6,6 @@ module.exports = class RestResource
     member: null
     parent: null
 
-
   constructor: (@name, @client, @member = null, @parent = null) ->
 
   create: (object, callbacks) ->
@@ -41,6 +40,7 @@ module.exports = class RestResource
   bind: (name, options = null) ->
     HTTPMethod = options?.via or 'get'
     path = options?.to or name
+    path = '' if path == '/'
     @[name] = (params, callbacks) =>
       @client[HTTPMethod] "#{@getPath()}/#{path}", params, callbacks
 
@@ -50,8 +50,8 @@ module.exports = class RestResource
   @bindResource: (object, client, name, configuration) ->
     resource = new RestResource(name, client)
     # Bind resource to object instance with [name] for accessor
-    object[name] = (member = null) =>
-      resource.member = member if member
+    object[name] = (member = '') =>
+      resource.member = member
       resource.parent = object.getPath() if object instanceof RestResource
       resource
     configuration.apply(resource) if configuration

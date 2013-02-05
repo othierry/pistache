@@ -22,7 +22,6 @@ module.exports = class HttpClient
     @cachingStrategy.cacheResponse response, request
 
   post: (path, params, callbacks) ->
-    alert "#{@url}/#{path}"
     HttpClient.request "#{@url}/#{path}", params, 'POST',
       headers: => @customRequestHeaders
       success: (object) ->
@@ -33,7 +32,6 @@ module.exports = class HttpClient
   get: (path, params, callbacks) ->
     url = "#{@url}/#{path}"
 
-    alert url
     # If cache enabled
     unless @cachingPolicy is CachingPolicy.CachingPolicyNone
       cachedResponse = @cachingStrategy?.cachedResponseForRequest url
