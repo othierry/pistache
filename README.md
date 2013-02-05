@@ -55,7 +55,7 @@ client = new Pistache.RestClient url:  'http://your-server.com/api'
 
 ```coffeescript
 # Simply add resources like this
-client.resoures 'users'
+client.resource 'users'
 ```
 
 This will generate the following methods:
@@ -63,6 +63,16 @@ This will generate the following methods:
 * client.users().create()
 * client.users().update()
 * client.users().delete()
+
+#### Resource configuration ####
+When you bind a new resource object, you can profile a customization block (or anonymous function) to customize the resource behaviour and states (methods, bindings, embedded resources)
+```coffeescript
+client.resoures 'users', ->
+  @only ['fetch', 'update'] # Will only keep fetch() and update() methods, others will be stated as undefined
+
+client.resoures 'pokes', ->
+  @except ['delete'] # Will state given methods as undefined and keep the others
+```
 
 #### Binding custom endpoints ####
 
@@ -81,8 +91,10 @@ This will generate the following methods:
 
 ```coffeescript
 client.resoures 'users', ->
-  @resources 'profile'
+  @resources 'profile', ->
+    @except ['create', delete']
   @resources 'contacts', ->
+    @only ['create', 'fetch']
     @bind 'revoke', via: 'post'
 ```
 
@@ -94,14 +106,10 @@ This will generate the following methods:
 * client.users().delete()
 
 * client.users().profile().fetch()
-* client.users().profile().create()
 * client.users().profile().update()
-* client.users().profile().delete()
 
 * client.users().contacts().fetch()
 * client.users().contacts().create()
-* client.users().contacts().update()
-* client.users().contacts().delete()
 * client.users().contacts().revoke()
 
 
@@ -142,7 +150,7 @@ CachingPolicy =
 
 * A Caching Strategy
 Where and how elements are going to be cached.
-The CachingStrategy class is an abstract class and cannot be used raw. Caching Strategies must derive from CachingStrategy class and ovveride abstract methods to perform caching.
+The CachingStrategy class is an abstract class and cannot be used raw. Caching Strategies must derive from CachingStrategy class and overide abstract methods to perform caching.
 
 For now only one caching strategy is bundled in the project (LocalStorageCachingStrategy which you can use directly), but you can easily provide your own implementation of a caching strategy (IndexDB) by creating a sublass of CachingStrategy.
 
