@@ -92,7 +92,7 @@ This will generate the following methods:
 ```coffeescript
 client.resoures 'users', ->
   @resources 'profile', ->
-    @except ['create', delete']
+    @except ['create', 'delete']
   @resources 'contacts', ->
     @only ['create', 'fetch']
     @bind 'revoke', via: 'post'
