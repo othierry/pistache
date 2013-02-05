@@ -18,10 +18,11 @@ module.exports = class HttpClient
   # ----------------------------------------
   cacheResponse:(response, request) ->
     return if @cachingPolicy is CachingPolicy.CachingPolicyNone
-    return if @cachingStrategy is null or request is null
+    return if @cachingStrategy is undefined or request is undefined
     @cachingStrategy.cacheResponse response, request
 
   post: (path, params, callbacks) ->
+    alert "#{@url}/#{path}"
     HttpClient.request "#{@url}/#{path}", params, 'POST',
       headers: => @customRequestHeaders
       success: (object) ->
@@ -32,6 +33,7 @@ module.exports = class HttpClient
   get: (path, params, callbacks) ->
     url = "#{@url}/#{path}"
 
+    alert url
     # If cache enabled
     unless @cachingPolicy is CachingPolicy.CachingPolicyNone
       cachedResponse = @cachingStrategy?.cachedResponseForRequest url
@@ -48,7 +50,6 @@ module.exports = class HttpClient
         callbacks?.success object if callbacks?.success
       error: (error) ->
         callbacks?.error error if callbacks?.error
-
 
   put: (path, params, callbacks) ->
     HttpClient.request "#{@url}/#{path}", params, 'PUT',

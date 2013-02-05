@@ -3,20 +3,30 @@ module.exports = class RestResource
   defaults =
     name: null
     client: null
+    member: null
+    parent: null
 
-  constructor: (@name, @client) ->
 
-  create: (user, callbacks) ->
-    @client.post "#{@name}", {user}, callbacks
+  constructor: (@name, @client, @member = null, @parent = null) ->
 
-  update:  (object_id, user, callbacks) ->
-    @client.put "#{@name}/#{object_id}", {user}, callbacks
+  create: (object, callbacks) ->
+    @client.post @getPath(), object, callbacks
 
-  show:  (object_id, callbacks) ->
-    @client.get "#{@name}/#{object_id}", {}, callbacks
+  update:  (object, callbacks) ->
+    @client.put @getPath(), object, callbacks
 
-  delete: (object_id, callbacks) ->
-    @client.delete "#{@name}/#{object_id}"
+  fetch:  (callbacks) ->
+    @client.get @getPath(), {}, callbacks
+
+  delete: (callbacks) ->
+    @client.delete @getPath()
+
+  getPath: ->
+    path = ''
+    path += "#{@parent}/" if @parent
+    path += @name
+    path += "/#{@member}" if @member
+    path
 
   # Bind remote sub-resource access routes
   # (create, update, delete, show)
@@ -31,21 +41,18 @@ module.exports = class RestResource
   bind: (name, options = null) ->
     HTTPMethod = options?.via or 'get'
     path = options?.to or name
-    if options.member?
-      @[name] = (id, params, callbacks) =>
-        @client[HTTPMethod] "#{id}/#{path}", params, callbacks
-      @[name]
-    else
-      @[name] = (params, callbacks) =>
-        @client[HTTPMethod] "#{path}", params, callbacks
-      @[name]
+    @[name] = (params, callbacks) =>
+      @client[HTTPMethod] "#{@getPath()}/#{path}", params, callbacks
 
   # Bind new resource with accessor [name] to {object}
   # Additional conf. can be provided (subresources, bindings...)
   # ------------------------------------------------
   @bindResource: (object, client, name, configuration) ->
     resource = new RestResource(name, client)
-    # Bind resource to object insteance with [name] for accessor
-    object[name] = resource
+    # Bind resource to object instance with [name] for accessor
+    object[name] = (member = null) =>
+      resource.member = member if member
+      resource.parent = object.getPath() if object instanceof RestResource
+      resource
     configuration.apply(resource) if configuration
     resource
