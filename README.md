@@ -18,6 +18,14 @@ brunch build --minify
 ```
 then import {pistache-download-dir}/build/lib/pistache.js and {pistache-download-dir}/build/lib/pistache-vendor.js to your project to start using Pistache!
 
+## Running the tests ##
+
+You will also need brunch to launch the tests of the lib, you can (and should) download brunch at http://brunch.io. Brunch rocks!
+```
+cd {pistache-download-di}
+brunch test
+```
+
 ## Overview ##
 
 You can use Pistache to create simple HttpClient or more specific RestClient to connect your app with your remote server trough a very simple API. Pistache also propose a client-side caching system (still under development)
