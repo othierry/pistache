@@ -6,7 +6,7 @@ module.exports = class RestResource
     member: null
     parent: null
 
-  constructor: (@name, @client, @member = null, @parent = null) ->
+  constructor: (@name, @client) ->
 
   create: (object, callbacks) ->
     @client.post @getPath(), object, callbacks
@@ -21,17 +21,19 @@ module.exports = class RestResource
     @client.delete @getPath()
 
   getPath: ->
-    path = ''
-    path += "#{@parent}/" if @parent
-    path += @name
-    path += "/#{@member}" if @member
-    path
+    (if @parent then "#{@parent}/" else '') + @name + (if @member then "/#{@member}" else '')
 
   # Bind remote sub-resource access routes
   # (create, update, delete, show)
   # ----------------------------
-  resource: (name, options = null) ->
-    RestResource.bindResource(@, @client, name, options)
+  resource: (name, configuration = null) ->
+    RestResource.bindResource(@, @client, name, configuration)
+
+  only: (methods = []) ->
+    @[method] = undefined for method in ['create', 'update', 'delete', 'update'] when methods.indexOf(method) is -1
+
+  except: (methods = []) ->
+    @[method] = undefined for method in methods
 
   # Bind REST a endpoint.
   # Suited for action web services instead of plain resource
@@ -47,8 +49,8 @@ module.exports = class RestResource
   # Bind new resource with accessor [name] to {object}
   # Additional conf. can be provided (subresources, bindings...)
   # ------------------------------------------------
-  @bindResource: (object, client, name, configuration) ->
-    resource = new RestResource(name, client)
+  @bindResource: (object, client, name, configuration = null) ->
+    resource = new RestResource name, client
     # Bind resource to object instance with [name] for accessor
     object[name] = (member = '') =>
       resource.member = member
