@@ -8,7 +8,7 @@ You can use Pistache to create simple HttpClient or more specific RestClient to 
 
 ## Installation ##
 
-You will need brunch in order to build the lib, you can (and should!) download brunch at http://brunch.io
+You will need brunch (or npm) in order to build the lib, you can download brunch at http://brunch.io
 
 ```
 $ cd {pistache-download-dir}
@@ -19,10 +19,12 @@ then import {pistache-download-dir}/build/lib/pistache.js and {pistache-download
 
 ## Running the tests ##
 
-You will also need brunch to launch the tests of the lib, you can (and should!) download brunch at http://brunch.io
+You will also need brunch or npm to launch the tests of the lib, you can download brunch at http://brunch.io
 ```
 $ cd {pistache-download-dir}
 $ brunch test
+# or
+$ npm test
 ```
 
 ## Usage ##
@@ -54,7 +56,9 @@ client.delete ...
 Pistache.HttpClient.request(url, params, httpMethod, callbacks)
 ```
 
-### REST Client ###
+### Simple REST Client ###
+
+Pistache.RestClient inherits from Pistache.HttpClient. Therefore you can still use all the features from Pisache.HttpClient class.
 
 ```coffeescript
 # You can create a client like this
@@ -77,10 +81,10 @@ This will generate the following methods:
 #### Resource configuration ####
 When you bind a new resource object, you can provide a customization block (anonymous function) to customize the resource behaviour and states (methods, bindings, embedded resources)
 ```coffeescript
-client.resoures 'users', ->
+client.resource 'users', ->
   @only 'fetch', 'update' # Will only keep fetch() and update() methods, others will be stated as undefined
 
-client.resoures 'pokes', ->
+client.resource 'pokes', ->
   @except 'delete' # Will state given methods as undefined and keep the others
 ```
 

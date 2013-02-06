@@ -29,10 +29,10 @@ module.exports = class RestResource
   resource: (name, configuration = null) ->
     RestResource.bindResource(@, @client, name, configuration)
 
-  only: (methods = []) ->
+  only: (methods...) ->
     @[method] = undefined for method in ['create', 'update', 'delete', 'update'] when methods.indexOf(method) is -1
 
-  except: (methods = []) ->
+  except: (methods...) ->
     @[method] = undefined for method in methods
 
   # Bind REST a endpoint.
