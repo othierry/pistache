@@ -65,13 +65,13 @@ module.exports = class HttpClient
       error: (error) ->
         callbacks?.error error  if callbacks?.error
 
-  @request: (url, params, httpMethod, callbacks, apiVersion = 1) =>
+  @request: (url, params, httpMethod, callbacks) =>
     $.ajax
       type   : httpMethod
       url     : url
       data   : params
-      headers: callbacks.headers() if callbacks and callbacks.headers
+      headers: callbacks.headers() if callbacks?.headers
       success: (response) ->
-        callbacks.success(response) if callbacks and callbacks.success
+        callbacks.success(response) if callbacks?.success
       error: (response) ->
-        callbacks.error(response) if callbacks and callbacks.error
+        callbacks.error(response) if callbacks?.error
