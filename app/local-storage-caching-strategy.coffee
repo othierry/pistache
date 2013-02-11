@@ -11,7 +11,7 @@ module.exports = class LocalStorageCachingStrategy extends CachingStrategy
   # -------------------------------------
   cacheResponse: (response, request) ->
     hash = @getRequestHash request
-    window.localStorage.setItem hash, JSON.stringify(response)
+    window.localStorage.setItem hash, JSON.stringify(response) if hash and response
 
   # Returns the cache response for given request
   # if found in the cache, null otherwise.
