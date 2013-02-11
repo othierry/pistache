@@ -23,7 +23,7 @@ module.exports = class HttpClient
 
   post: (path, params, callbacks) ->
     HttpClient.request "#{@url}/#{path}", params, 'POST',
-      headers: => @customRequestHeaders
+      headers: => @customRequestHeaders || callbacks?.headers
       success: (object) ->
         callbacks?.success object if callbacks?.success
       error: (error) ->
@@ -41,7 +41,7 @@ module.exports = class HttpClient
       return if cachedResponse and @cachingPolicy is CachingPolicy.CachingPolicyCacheIfAvailable
 
     HttpClient.request url, params, 'GET',
-      headers: => @customRequestHeaders
+      headers: => @customRequestHeaders || callbacks?.headers
       success: (object) =>
         # Cache the response
         @cacheResponse(object, url)
@@ -51,7 +51,7 @@ module.exports = class HttpClient
 
   put: (path, params, callbacks) ->
     HttpClient.request "#{@url}/#{path}", params, 'PUT',
-      headers: => @customRequestHeaders
+      headers: => @customRequestHeaders || callbacks?.headers
       success: (object) ->
         callbacks?.success object if callbacks?.success
       error: (error) ->
@@ -59,7 +59,7 @@ module.exports = class HttpClient
 
   delete: (path, params, callbacks) ->
     HttpClient.request "#{@url}/#{path}", params, 'DELETE',
-      headers: => @customRequestHeaders
+      headers: => @customRequestHeaders || callbacks?.headers
       success: (object) ->
         callbacks?.success object if callbacks?.success
       error: (error) ->
@@ -75,3 +75,5 @@ module.exports = class HttpClient
         callbacks.success(response) if callbacks?.success
       error: (response) ->
         callbacks.error(response) if callbacks?.error
+
+  @client
